@@ -137,20 +137,7 @@ jgs\ "\\//",.\|/|//.|/\\|/\\|,\|/ //\|/\|.\\\| // \|\\ |/,\|/
 
   def self.display_a
     pic = CatPageArtA.new
-    # selector_number = rand(0..5)
-    # if selector_number == 0
-    #   puts pic.pic_one_a
-    # elsif selector_number == 1
-    #   puts pic.pic_two_a
-    # elsif selector_number == 2
-    #   pic.pic_three_a
-    # elsif selector_number == 3
-    #   pic.pic_four_a
-    # elsif selector_number == 4
-    #   pic.pic_five_a
-    # elsif selector_number == 5
-      pic.pic_six_a
-    # end
+    pic.pic_six_a
   end
 
 end

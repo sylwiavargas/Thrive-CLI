@@ -100,10 +100,7 @@
 
 
     def self.breathing(user)
-      #we could ask how many times they want to repeat or for how many minutes they want to breathe but if they're in panic?
-      #I remember Graham say something about that time in Ruby is funny - divided by 8?
       WellnessCli.invite_for_breathing(user)
-      #next step
     end
 
     ############################# QUOTES ############################################################
@@ -121,7 +118,6 @@
       if nav == "Back"
         WellnessCli.go(user)
       end
-      # system("say -v samantha '#{quote} #{author}'") #version for accessibility
     end
 
 
@@ -138,29 +134,7 @@
       if nav == "Back"
         WellnessCli.go(user)
       end
-      # system("say -v samantha '#{quote} #{author}'") version for accessibility
     end
-
-      ############################# TIPS ############################################################
-      ###This data has been seeded instead, find this method in the seed file
-      # def self.scrape_tips
-      #     list = []
-      #
-      #     html = open("https://ggia.berkeley.edu/")
-      #     doc = Nokogiri::HTML(html)
-      #     tips = doc.search(".article__content") #selects 12 tips
-      #
-      #     tips.map.with_index do |tip, index|
-      #         new_tip = Tip.new #create a new Tip instance
-      #         new_tip.title = tip.css('h4').text
-      #         new_tip.content = tip.css('p').text
-      #         # new_tip.content = tip.attr("href")
-      #         # list[index] = new_tip
-      #     end
-      #     #
-      #     # list.sort_by! {|obj| BY WHAT}
-      #     list
-      # end
 
       ############################# EVERYTHING TOGETHER #############################################
 

@@ -1,11 +1,3 @@
-require 'pry'
-require 'rest-client'
-require 'json'
-require 'net/http'
-require 'tty-prompt'
-require 'open-uri'
-require 'nokogiri'
-
 class WellnessCliA
 
     # https://www.wikihow.com/Meditate-on-Breath

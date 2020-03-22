@@ -5,7 +5,6 @@ require 'lolcat'
 class CommandLineInterfaceA
   ##################  This is just for fun  #####################
   def self.logo_art_a
-    # logo = puts "//".colorize(:cyan) + " ♥".colorize(:red)
     art = puts <<-'EOF'
 
              ████████╗██╗  ██╗██████╗ ██╗██╗   ██╗███████╗
@@ -31,7 +30,6 @@ class CommandLineInterfaceA
                                    {
                   TIPS TO SURVIVE WEB DEV BOOTCAMP
       EOF
-      # puts logo
     puts art
     puts "           [audio announcement playing, text will proceed]"
   end

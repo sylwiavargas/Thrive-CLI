@@ -351,7 +351,6 @@ class User < ActiveRecord::Base
     users_labels = all_users_tips.map(&:label).uniq
     output = users_labels.map { |label| "#{counter += 1}. #{label}" }
     if counter == 0
-      # Add an animation if ther are no saved tips#
       self.empty_directory_a
       puts 'You currently have no saved tips. Choose "More" to find new ones!'
       CliStart.sam_say("You currently have no saved tips. Choose the optiongo back to your homepage and use the option more to find new ones!")
