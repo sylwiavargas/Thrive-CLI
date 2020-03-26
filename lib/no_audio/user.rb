@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
   has_many :directories
   has_many :tips, through: :directories
 
+  @@prompt = TTY::Prompt.new
+
   ########################## Tip Navigation Methods ############################
   def chosen_tip(tip, nav)
     if tip == nil
@@ -51,10 +53,9 @@ class User < ActiveRecord::Base
   end
 
   def category_tips(nav)
-    prompt = TTY::Prompt.new
     system 'clear'
     choices = fetch_category_choices(nav)
-    choice = prompt.select("Choose a tip.\n", choices, per_page: 10)
+    choice = @@prompt.select("Choose a tip.\n", choices, per_page: 10)
     if choice == 'Back'
       self.category_search_page
     elsif choice == 'See More'
@@ -87,9 +88,8 @@ class User < ActiveRecord::Base
   def category_search_page
     system 'clear'
     CatPageArt.display
-    prompt = TTY::Prompt.new
     choices = ["Ruby", "Wellness", "Career", "Social", "Back to Home Page"]
-    nav = prompt.select("\nWhich category would you like to view?\n", choices)
+    nav = @@prompt.select("\nWhich category would you like to view?\n", choices)
     if nav == 'Back to Home Page'
       CommandLineInterface.user_home_page(self)
     elsif nav == 'Wellness'
@@ -161,12 +161,11 @@ class User < ActiveRecord::Base
   end
 
   def user_saved_tips
-    prompt = TTY::Prompt.new
     system 'clear'
     labels = get_user_labels(self)
     return if labels == nil
     labels.push('Back')
-    nav = prompt.select('These are your saved labels', labels)
+    nav = @@prompt.select('These are your saved labels', labels)
 
     if nav == 'Back'
       CommandLineInterface.user_home_page(self)
@@ -182,8 +181,8 @@ class User < ActiveRecord::Base
         "#{counter += 1}. #{tip.content}"
       end
 
-      prompt = TTY::Prompt.new
-      choice = prompt.select(' ', choices).split('. ')
+
+      choice = @@prompt.select(' ', choices).split('. ')
 
       choice.delete_at(0)
       choice = choice.join('. ')

@@ -2,6 +2,8 @@ class User < ActiveRecord::Base
   has_many :directories
   has_many :tips, through: :directories
 
+  @@prompt = TTY::Prompt.new
+
   ############################## Sign Up Methods ###############################
   def self.check_username_a(username)
     if all.map(&:name).include?(username)
@@ -16,8 +18,8 @@ class User < ActiveRecord::Base
 
   def self.set_username_a
     system 'clear'
-    prompt = TTY::Prompt.new
-    username = prompt.ask('What is your username?') do |q|
+    
+    username = @@prompt.ask('What is your username?') do |q|
       q.required true
     end
     username = username.downcase
@@ -31,8 +33,8 @@ class User < ActiveRecord::Base
 
   def self.set_password_a
     CliStart.sam_say("What is your password?")
-    prompt = TTY::Prompt.new
-    heart = prompt.decorate('❤ ', :red)
+    
+    heart = @@prompt.decorate('❤ ', :red)
     prompt.mask('What is your password?', mask: heart)
   end
 
@@ -48,15 +50,15 @@ class User < ActiveRecord::Base
     set_pw_page_a(username)
     password = set_password_a
     CliStart.sam_say("Please confirm your password?")
-    prompt = TTY::Prompt.new
-    heart = prompt.decorate('❤ ', :red)
-    confirm = prompt.mask('Please confirm your password?', mask: heart)
+    
+    heart = @@prompt.decorate('❤ ', :red)
+    confirm = @@prompt.mask('Please confirm your password?', mask: heart)
     validate_pw_a(confirm, password, username)
     password
   end
 
   def self.set_email_a
-    prompt = TTY::Prompt.new
+    
     prompt.ask('What is your email?') do |q|
       q.validate(/\A\w+@\w+\.\w+\Z/) # copied from TTY prompt documentation
       q.messages[:valid?] = CliStart.sam_say("Invalid email address")
@@ -119,21 +121,21 @@ class User < ActiveRecord::Base
   def users_label_a
     CliStart.sam_say("How would you like to label this tip?")
     puts "\n"
-    prompt = TTY::Prompt.new
-    users_label_a = prompt.ask("How would you like to label this tip?")
+    
+    users_label_a = @@prompt.ask("How would you like to label this tip?")
     users_label_a
   end
 
   def users_comment_a
     CliStart.sam_say("Is there any comment you would like to add for yourself?")
     puts "\n"
-    prompt = TTY::Prompt.new
-    users_comment_a = prompt.ask("Is there any comment you would like to add for yourself?")
+    
+    users_comment_a = @@prompt.ask("Is there any comment you would like to add for yourself?")
     users_comment_a
   end
 
   def save_tip_from_search_a(new_tip)
-    prompt = TTY::Prompt.new
+    
     system 'clear'
     puts "\n🔹  #{new_tip.name.to_s} 🔹"
     puts "\n\n" + new_tip.content.to_s + "\n\n"
@@ -144,7 +146,7 @@ class User < ActiveRecord::Base
     sleep (0.5)
     CliStart.sam_say("Use the arrow keys and enter to choose an option. Top option: save the tip. Second option: go back. Bottom option: exit to homepage.")
     choices = ["Save the Tip", "Back", "Exit to Home Page"]
-    save_or_back = prompt.select('', choices)
+    save_or_back = @@prompt.select('', choices)
     if save_or_back == 'Save the Tip'
       save_tip_a(new_tip)
       RubyTipsA.ask_to_exit_a(self)
@@ -164,19 +166,19 @@ class User < ActiveRecord::Base
   end
 
   def save_or_back_a(tip, nav)
-    prompt = TTY::Prompt.new
+    
     CliStart.sam_say("Use the arrow keys and enter to choose an option. Top option: save the tip. Bottom option: go back.")
     choices = ["Save the Tip", "Back"]
-    choice = prompt.select('', choices)
+    choice = @@prompt.select('', choices)
     save_ti_ap(tip) if choice == 'Save the Tip'
     category_tips_a(nav)
   end
 
   def save_or_back_or_read_a(tip, nav)
-    prompt = TTY::Prompt.new
+    
     CliStart.sam_say("Use the arrow keys and enter to choose an option. Top option: save the tip. Second option: search the web. Bottom option: go back.")
     choices = ["Save the Tip", "Search the Web", "Back"]
-    choice = prompt.select('', choices)
+    choice = @@prompt.select('', choices)
     if choice == 'Save the Tip'
       save_tip_a(tip)
       save_or_back_or_read_a(tip, nav)
@@ -229,7 +231,7 @@ class User < ActiveRecord::Base
   end
 
   def category_tips_a(nav)
-    prompt = TTY::Prompt.new
+    
     all_tips = Tip.where('category = ?', nav)
     no_user_tips = all_tips.where('user_created = ?', false)
     choices = no_user_tips.map { |tip| "#{tip.name}" }
@@ -251,7 +253,7 @@ class User < ActiveRecord::Base
     choices_a.each do |choice|
       CliStart.sam_say("#{counter +=1} #{choice}")
     end
-    choice = prompt.select("Choose a tip.\n", choices, per_page: 5)
+    choice = @@prompt.select("Choose a tip.\n", choices, per_page: 5)
     if choice == 'Back'
       self.category_search_page_a
     elsif choice == 'See More'
@@ -269,9 +271,9 @@ class User < ActiveRecord::Base
     CatPageArtA.display_a
     CliStart.sam_say("Which category would you like to view?")
     CliStart.sam_say("Use the arrow keys and enter to choose an option. Top option: Ruby. Second option: wellness. Third option: Career. Fourth option: Social. Bottom option: back to homepage.")
-    prompt = TTY::Prompt.new
+    
     choices = ["Ruby", "Wellness", "Career", "Social", "Back to Home Page"]
-    nav = prompt.select("\nWhich category would you like to view?\n", choices)
+    nav = @@prompt.select("\nWhich category would you like to view?\n", choices)
     if nav == 'Back to Home Page'
       CommandLineInterfaceA.user_home_page_a(self)
     elsif nav == 'Wellness'
@@ -361,7 +363,7 @@ class User < ActiveRecord::Base
   end
 
   def user_saved_tips_a
-    prompt = TTY::Prompt.new
+    
     system 'clear'
     labels = get_user_labels_a(self)
     return if labels == nil
@@ -372,7 +374,7 @@ class User < ActiveRecord::Base
       label = label.gsub(/'s/, 'is').gsub(/\n/, '')
       CliStart.sam_say("#{counter += 1}. #{label}")
     end
-    nav = prompt.select('These are your saved labels:', labels)
+    nav = @@prompt.select('These are your saved labels:', labels)
 
     if nav == 'Back'
       CommandLineInterfaceA.user_home_page_a(self)
@@ -389,8 +391,8 @@ class User < ActiveRecord::Base
         CliStart.sam_say("#{counter += 1}. #{content}")
       end
 
-      prompt = TTY::Prompt.new
-      choice = prompt.select(' ', choices).split('. ')
+      
+      choice = @@prompt.select(' ', choices).split('. ')
 
       choice.delete_at(0)
       choice = choice.join('. ')

@@ -3,6 +3,9 @@ require 'artii'
 require 'lolcat'
 
 class CommandLineInterfaceA
+
+  @@prompt = TTY::Prompt.new
+  
   ##################  This is just for fun  #####################
   def self.logo_art_a
     art = puts <<-'EOF'
@@ -49,8 +52,7 @@ class CommandLineInterfaceA
     CliStart.sam_say('Select top option to try again and bottom option to go back to the homepage')
     system 'clear'
     self.logo_art_a
-    prompt = TTY::Prompt.new
-    nav = prompt.select('', %w(Retry? Back))
+    nav = @@prompt.select('', %w(Retry? Back))
     if nav == "Retry?"
       self.log_in_name_a
     else
@@ -61,8 +63,7 @@ class CommandLineInterfaceA
   def self.fail_pw_check_a(username_query)
     puts "Incorrect password"
     CliStart.sam_say('Incorrect password. Top option - try again, bottom option - go back.')
-    prompt = TTY::Prompt.new
-    nav = prompt.select('', %w(Retry? Back))
+    nav = @@prompt.select('', %w(Retry? Back))
     if nav == "Retry?"
       self.log_in_pw_a(username_query)
     else
@@ -76,8 +77,7 @@ class CommandLineInterfaceA
     self.logo_art_a
     puts "\n"
     CliStart.sam_say('What is your username?')
-    prompt = TTY::Prompt.new
-    username_query = prompt.ask("Username:")
+    username_query = @@prompt.ask("Username:")
     if username_query == 'nil'
       User.name_fail_a
     else
@@ -94,20 +94,18 @@ class CommandLineInterfaceA
     puts "Username: " + username_query
     CliStart.sam_say("Your username is #{username_query}")
     CliStart.sam_say("Please write your password")
-    prompt = TTY::Prompt.new
-    heart = prompt.decorate('❤ ', :red)
-    password_query = prompt.mask("Password:", mask: heart).downcase
+    heart = @@prompt.decorate('❤ ', :red)
+    password_query = @@prompt.mask("Password:", mask: heart).downcase
     User.check_password_a(username_query, password_query)
   end
 
 
   ##################### Main User Home Page #####################
   def self.user_home_page_a(user)
-    prompt = TTY::Prompt.new
     system 'clear'
     CliStart.sam_say('You are on the homepage. Use arrows to choose first option to explore more tips, second option to access your saved tips and third to logout.')
     choices = ["More Tips", "Saved Tips", "Logout"]
-    nav = prompt.select("\n", choices)
+    nav = @@prompt.select("\n", choices)
     if nav == "More Tips"
       user.select_a_tip_a
     elsif nav == "Saved Tips"
@@ -123,11 +121,10 @@ class CommandLineInterfaceA
     CliStart.sam_say('Hello. You are on the homepage. Here is todays tip: Although pry may seem a little counter-intuitive (for instance, you may think why would I stop my process to use pry?!?), it will save you a lot of trouble if you pry often.')
     sleep (0.5)
     CliStart.sam_say('Use arrows to choose first option to explore more tips, second option to access your saved tips and third to logout.')
-    prompt = TTY::Prompt.new
     system 'clear'
     puts "Hello"
     choices = ["More Tips", "Saved Tips", "Logout"]
-    nav = prompt.select("\n🔹  Here's today's tip: 🔹\n\n#{Tip.first.content}\n", choices)
+    nav = @@prompt.select("\n🔹  Here's today's tip: 🔹\n\n#{Tip.first.content}\n", choices)
     if nav == "More Tips"
       user.select_a_tip_a
     elsif nav == "Saved Tips"
@@ -146,8 +143,7 @@ class CommandLineInterfaceA
     CliStart.sam_say('You are now back on the landing page.')
     CliStart.sam_say('What would you like to do?')
     CliStart.sam_say('Use arrows to choose first option to create an account, second option to login and third to exit the app.')
-    prompt = TTY::Prompt.new
-    nav = prompt.select("\nWhat would you like to do?", %w(Create Login Exit))
+    nav = @@prompt.select("\nWhat would you like to do?", %w(Create Login Exit))
     if nav == "Create"
       new_user = User.create_a_user_a
       temp_home_page_a(new_user)
@@ -166,8 +162,7 @@ class CommandLineInterfaceA
     CliStart.alex_say('This landing page features a picture of a tree composed out of different keyboard characters and symbols. The tree has many branches, leaves, roots and appears strong and well-grounded.')
     CliStart.sam_say('What would you like to do?')
     CliStart.sam_say('Use arrows to choose first option to create an account, second option to login and third to exit the app.')
-    prompt = TTY::Prompt.new
-    nav = prompt.select("\nWhat would you like to do?", %w(Create Login Exit))
+    nav = @@prompt.select("\nWhat would you like to do?", %w(Create Login Exit))
     if nav == "Create"
       new_user = User.create_a_user_a
       temp_home_page_a(new_user)

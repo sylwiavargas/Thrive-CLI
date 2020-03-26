@@ -1,5 +1,6 @@
 class SignUpAndLogIn
 
+  @@prompt = TTY::Prompt.new
   ############################## Sign Up Methods ###############################
   def check_username(username)
     if User.all.map(&:name).include?(username)
@@ -13,8 +14,7 @@ class SignUpAndLogIn
 
   def set_username
     system 'clear'
-    prompt = TTY::Prompt.new
-    username = prompt.ask('What is your username?') do |q|
+    username = @@prompt.ask('What is your username?') do |q|
       q.required true
     end
     username = username.downcase
@@ -27,8 +27,7 @@ class SignUpAndLogIn
   end
 
   def set_password
-    prompt = TTY::Prompt.new
-    heart = prompt.decorate('❤ ', :red)
+    heart = @@prompt.decorate('❤ ', :red)
     prompt.mask('What is your password?', mask: heart)
   end
 
@@ -43,15 +42,13 @@ class SignUpAndLogIn
   def confirm_password(username)
     set_pw_page(username)
     password = set_password
-    prompt = TTY::Prompt.new
-    heart = prompt.decorate('❤ ', :red)
-    confirm = prompt.mask('Please confirm your password?', mask: heart)
+    heart = @@prompt.decorate('❤ ', :red)
+    confirm = @@prompt.mask('Please confirm your password?', mask: heart)
     validate_pw(confirm, password, username)
     password
   end
 
   def set_email
-    prompt = TTY::Prompt.new
     prompt.ask('What is your email?') do |q|
       q.validate(/\A\w+@\w+\.\w+\Z/) # copied from TTY prompt documentation
       q.messages[:valid?] = 'Invalid email address'

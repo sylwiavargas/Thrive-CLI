@@ -2,11 +2,12 @@
 
     # https://www.wikihow.com/Meditate-on-Breath
 
+    @@prompt = TTY::Prompt.new
+
 ############################# BREATHING METHODS ############################################################
     def self.invite_for_breathing(user)
-      prompt = TTY::Prompt.new
       choices = ["30 seconds", "1 minute", "2 minutes", "3 minutes"]
-      time = prompt.select('How much time do you have for this exercise?', choices)
+      time = @@prompt.select('How much time do you have for this exercise?', choices)
       number = 1 if time == "30 seconds"
       number = 2 if time == "1 minute"
       number = 4 if time == "2 minutes"
@@ -113,8 +114,7 @@
       puts "\n\n                                 🔹 🔹 🔹                                       \n\n"
       puts "Here is your inspirational quote for today: \n\n '#{quote}'" +  "\n\n                               (#{author})"
       puts "\n\n                                 🔹 🔹 🔹                                       \n\n"
-      prompt = TTY::Prompt.new
-      nav = prompt.select('', %w(Back))
+      nav = @@prompt.select('', %w(Back))
       if nav == "Back"
         WellnessCli.go(user)
       end
@@ -129,8 +129,7 @@
       puts "\n\n                                 🔹 🔹 🔹                                       \n\n"
       puts "Here is your management quote for today: \n\n '#{quote}'" +  "\n                            (#{author})"
       puts "\n\n                                 🔹 🔹 🔹                                       \n\n"
-      prompt = TTY::Prompt.new
-      nav = prompt.select('', %w(Back))
+      nav = @@prompt.select('', %w(Back))
       if nav == "Back"
         WellnessCli.go(user)
       end
@@ -139,8 +138,7 @@
       ############################# EVERYTHING TOGETHER #############################################
 
     def self.wellness_options(user)
-      prompt = TTY::Prompt.new
-      nav = prompt.select("What are you interested in?", %w(Breathing Inspiration Management Tips Fun Back))
+      nav = @@prompt.select("What are you interested in?", %w(Breathing Inspiration Management Tips Fun Back))
       if nav == "Breathing"
         WellnessCli.breathing(user)
       elsif nav == "Inspiration"
