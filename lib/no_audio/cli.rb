@@ -1,4 +1,6 @@
 class CommandLineInterface
+
+  @@prompt = TTY::Prompt.new
   #########################  This is just for fun  #############################
   def self.logo_art
     puts "
@@ -50,8 +52,7 @@ class CommandLineInterface
     sleep 2
     system 'clear'
     self.logo_art
-    prompt = TTY::Prompt.new
-    nav = prompt.select('', %w(Retry? Back))
+    nav = @@prompt.select('', %w(Retry? Back))
     if nav == "Retry?"
       self.log_in_name
     else
@@ -61,8 +62,7 @@ class CommandLineInterface
 
   def self.fail_pw_check(username_query)
     puts "Incorrect password"
-    prompt = TTY::Prompt.new
-    nav = prompt.select('', %w(Retry? Back))
+    nav = @@prompt.select('', %w(Retry? Back))
     if nav == "Retry?"
       self.log_in_pw(username_query)
     else
@@ -74,8 +74,7 @@ class CommandLineInterface
     system 'clear'
     self.logo_art
     puts "\n"
-    prompt = TTY::Prompt.new
-    username_query = prompt.ask("Username:")
+    username_query = @@prompt.ask("Username:")
     log_in = SignUpAndLogIn.new
     if username_query == 'nil'
       log_in.name_fail
@@ -90,9 +89,8 @@ class CommandLineInterface
     self.logo_art
     puts "\n"
     puts "Username: " + username_query
-    prompt = TTY::Prompt.new
-    heart = prompt.decorate('❤ ', :red)
-    password_query = prompt.mask("Password:", mask: heart).downcase
+    heart = @@prompt.decorate('❤ ', :red)
+    password_query = @@prompt.mask("Password:", mask: heart).downcase
     log_in = SignUpAndLogIn.new
     log_in.check_password(username_query, password_query)
   end
@@ -100,11 +98,10 @@ class CommandLineInterface
 
   ############################ Main User Home Page #############################
   def self.user_home_page(user)
-    prompt = TTY::Prompt.new
     system 'clear'
     self.logo_art
     choices = ["More Tips", "Saved Tips", "Logout"]
-    nav = prompt.select("\n", choices)
+    nav = @@prompt.select("\n", choices)
     if nav == "More Tips"
       user.select_a_tip
     elsif nav == "Saved Tips"
@@ -117,12 +114,11 @@ class CommandLineInterface
 
   ####################### Home Page Upon Signup & Login ########################
   def self.temp_home_page(user)
-    prompt = TTY::Prompt.new
     system 'clear'
     self.logo_art
     puts "Hello"
     choices = ["More Tips", "Saved Tips", "Logout"]
-    nav = prompt.select("\n🔹  Here's today's tip: 🔹\n\n#{Tip.first.content}\n", choices)
+    nav = @@prompt.select("\n🔹  Here's today's tip: 🔹\n\n#{Tip.first.content}\n", choices)
     if nav == "More Tips"
       user.select_a_tip
     elsif nav == "Saved Tips"
@@ -138,8 +134,7 @@ class CommandLineInterface
     system 'clear'
     self.logo_art
     puts "Welcome to Thrive"
-    prompt = TTY::Prompt.new
-    nav = prompt.select("\nWhat would you like to do?", %w(Create Login Exit))
+    nav = @@prompt.select("\nWhat would you like to do?", %w(Create Login Exit))
     if nav == "Create"
       sign_up = SignUpAndLogIn.new
       new_user = sign_up.create_a_user
