@@ -11,67 +11,37 @@ It was developed as a Flatiron School’s mod1 group project to demonstrate the 
 ## Getting Started
 Clone this project into your local machine and follow the instructions below.
 
-Installing
+### Installing
 After cloning the project folder onto your local machine, take the following steps:
 
-Install the gems required for the guide by running the following command from the project folder.
-
-bundle install
-Create the necessary tables by running migrations.
-
-rake db:migrate
-Seed the database with the information needed to run the app (this may take a while).
-
-rake db:seed
-To start, run the following command from you project folder.
-
-Ruby bin/run.rb
-
+- Install the gems required for the guide: `bundle install`
+- Create the necessary tables by running migrations: `rake db:migrate`
+- Seed the database with the information needed to run the app (this may take a while): `rake db:seed`
+To start, run the following command from you project folder: `ruby bin/run.rb`
 
 
 ## Navigation of CLI
 
-Welcome page (select audio on/off option)
+- Welcome page (select audio on/off option)
+- Open Home Page
+- Create a user login
+- Read tips from database and save them with a label and a comment
+- Search Google for more info
+- Take part in various exercises and explore the app
+- Update your tip directory by label
+- Delete a tip directory
+- Exit
 
-Open Home Page
+## Built with
 
-Create a user login
-
-Read tips from database and save them with a label and a comment
-
-Search Google for more info
-
-Take part in various exercises and explore the app
-
-Update your tip directory by label
-
-Delete a tip directory
-
-Exit
-
-
-#### Built with
-
- Meetup API
- Quotes REST API
-'formatador' - styling output information into a neat table
-'artii' - creating text banners
-'Colorize' - enabling text coloring
-'lolcat' - enabling rainbow text coloring
-'sinatra-activerecord'
-'sqlite3'
-'require_all'
-'pry'
-'json'
-'Faker' - autogenerating fake seed data
-'tty-prompt' - enabling beautiful and easy option selection and user input
-'nokogiri' - web scraping
-'rest-client' - API calls
-
-
-#### Contributing
-Please read CONTRIBUTING.md for details on our code of conduct, and the process for submitting pull requests to us.
-
-
-#### Authors
-See the list of contributors who participated in this project.
+- Meetup API
+- Quotes REST API
+- `formatador` - styling output information into a neat table
+- `artii` - creating text banners
+- `colorize` - enabling text coloring
+- `lolcat` - enabling rainbow text coloring
+- `sinatra-activerecord`
+- `sqlite3`
+- `tty-prompt` - enabling beautiful and easy option selection and user input
+- `nokogiri` - web scraping
+- `rest-client` - API calls
